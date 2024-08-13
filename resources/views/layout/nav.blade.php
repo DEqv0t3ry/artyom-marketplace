@@ -10,10 +10,10 @@
             <ul class="navbar-nav">
                 @guest
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/login">Вход</a>
+                        <a class="nav-link active" aria-current="page" href="{{route('login')}}">Вход</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/register">Регистрация</a>
+                        <a class="nav-link" href="{{route('register')}}">Регистрация</a>
                     </li>
                 @endguest
                 @auth()
