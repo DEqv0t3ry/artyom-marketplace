@@ -6,7 +6,7 @@ use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Peoduct>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
  */
 class ProductFactory extends Factory
 {
@@ -22,7 +22,7 @@ class ProductFactory extends Factory
             'name' => fake()->word(),
             'price' => fake()->numberBetween(100, 10000),
             'unit' => fake()->word(),
-            'short_description' => fake()->sentence(),
+            'short_description' => fake()->text(),
             'photo' => fake()->imageUrl(),
             'main_description' => fake()->paragraph(),
         ];
