@@ -22,9 +22,9 @@ class ProductFactory extends Factory
             'name' => fake()->word(),
             'price' => fake()->numberBetween(100, 10000),
             'unit' => fake()->word(),
-            'short_description' => fake()->text(),
+            'short_description' => fake()->sentence(),
             'photo' => fake()->imageUrl(),
-            'main_description' => fake()->paragraph(),
+            'main_description' => fake()->realText(),
         ];
     }
 }

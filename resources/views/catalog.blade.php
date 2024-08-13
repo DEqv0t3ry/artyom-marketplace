@@ -6,6 +6,7 @@
 
         </div>
         <div class="col-6">
+            @include('shared.success-message')
             <p class="text-center fs-4 my-3">Каталог товаров</p>
             <hr>
             <div class="mt-3">

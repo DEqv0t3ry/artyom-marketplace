@@ -17,7 +17,7 @@ class ShopFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->word(),
+            'name' => fake()->company(),
             'inn' => fake()->numberBetween(1000000000, 9999999999),
             'address' => fake()->address(),
             'phone' => fake()->phoneNumber(),

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,7 +16,10 @@ class UserSeeder extends Seeder
     {
         User::factory()
             ->count(10)
-            ->hasProducts(3)
+            ->has(Product::factory()
+                ->count(3)
+                ->hasPhotos(3)
+            )
             ->hasShop()
             ->create();
     }

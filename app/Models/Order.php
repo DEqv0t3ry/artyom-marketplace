@@ -21,6 +21,7 @@ class Order extends Model
         'email',
         'phone',
         'count',
+        'product_id',
     ];
 
     public function products(): HasMany

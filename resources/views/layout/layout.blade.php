@@ -12,6 +12,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
           integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .card-hover:hover {
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 1);
+            transition: 0.3s;
+        }
+    </style>
 </head>
 @include('layout.nav')
 <body>
