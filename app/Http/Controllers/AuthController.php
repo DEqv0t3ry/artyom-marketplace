@@ -31,4 +31,30 @@ class AuthController extends Controller
 
         return redirect()->route('catalog')->with('success','Аккаунт успешно создан');
     }
+
+    public function authenticate()
+    {
+        if (auth()->attempt([
+            'email' => request('email'),
+            'password' => request('password')
+        ]))
+        {
+            request()->session()->regenerate();
+
+            return redirect()->route('catalog')->with('success','Вы успешно вошли');
+        }
+
+        return back()->withErrors([
+            'email' => 'Неверный логин или пароль'
+        ])->onlyInput('email');
+    }
+
+    public function logout()
+    {
+        auth()->logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect()->route('catalog')->with('success','Вы вышли из аккаунта');
+    }
 }

@@ -18,3 +18,7 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/products/{product}/orders', [OrderController::class, 'store'])->name('orders.store');
 
 Route::post('/users', [AuthController::class, 'store'])->name('users.store');
+
+Route::get('/users',[AuthController::class, 'authenticate'])->name('users.login');
+
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
