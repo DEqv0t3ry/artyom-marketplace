@@ -16,4 +16,5 @@ Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 
 Route::post('/products/{product}/orders', [OrderController::class, 'store'])->name('orders.store');
-//Route::resource('products', ProductController::class)->except('destroy');
+
+Route::post('/users', [AuthController::class, 'store'])->name('users.store');
