@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-lg bg-dark border-bottom border-bottom-dark sticky-top bg-body-tertiary"
      data-bs-theme="dark">
     <div class="container">
-        <a class="navbar-brand fw-light" href="/"><span class="fas fa-brain me-1"> </span>{{ config('app.name') }}</a>
+        <a class="navbar-brand fw-light" href=
+            @guest "/" @endguest @auth "{{route('users.show', Auth::id())}}" @endauth><span class="fas fa-brain me-1"> </span>{{ config('app.name') }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -10,7 +11,7 @@
             <ul class="navbar-nav">
                 @auth()
                     <li class="nav-item">
-                        <a class="nav-link" href="">Профиль</a>
+                        <a class="nav-link" href="{{route('users.show', Auth::id())}}">Профиль</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">Товары</a>
@@ -33,8 +34,10 @@
         @endguest
         @auth()
             <div class="d-flex align-items-center">
-                <img style="width:45px" class="me-2 avatar-sm rounded-circle"
-                     src="https://static.tildacdn.com/tild6338-3666-4133-a633-643664333838/photo.jpg" alt="Luigi Avatar">
+                @if(Auth::user()->shop)
+                    <img style="width:45px" class="me-2 avatar-sm rounded-circle"
+                         src="{{$user->shop->getLogoUrl()}}" alt="Luigi Avatar">
+                @endif
                 <form action="{{route('logout')}}" method="get">
                     @csrf
                     <button class="btn btn-danger btn-small">Выход</button>

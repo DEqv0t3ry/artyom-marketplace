@@ -21,5 +21,12 @@ class Shop extends Model
         'address',
         'phone',
         'logo',
+        'user_id',
     ];
+    public function getLogoUrl()
+    {
+        if ($this->logo) {
+            return url('storage/' . $this->logo);
+        }
+    }
 }

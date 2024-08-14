@@ -6,6 +6,7 @@ use App\Enums\RoleEnum;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -41,7 +42,7 @@ class AuthController extends Controller
         {
             request()->session()->regenerate();
 
-            return redirect()->route('catalog')->with('success','Вы успешно вошли');
+            return redirect()->route('users.show', Auth::id())->with('success','Вы успешно вошли');
         }
 
         return back()->withErrors([
