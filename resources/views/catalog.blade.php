@@ -18,7 +18,7 @@
                     <p class="text-center my-3">Ничего не найдено</p>
                 @endforelse
                 <div class="mt-3">
-                    {{$products->links()}}
+                    {{$products->withQueryString()->links()}}
                 </div>
             </div>
         </div>
