@@ -26,16 +26,20 @@
                         @forelse($user->products as $product)
                             <tr>
                                 <td><img src="{{$product->getThumbnailUrl()}}" class="img-thumbnail" alt="Изображение товара" style="max-width: 100px;"></td>
-                                <td><a href="/product/1" class="text-decoration-none">{{$product->name}}</a></td>
+                                <td><a href="{{route('products.edit', $product->id)}}" class="text-decoration-none">{{$product->name}}</a></td>
                                 <td>{{$product->price}} ₽</td>
                                 <td>{{$product->unit->name}}</td>
                                 <td class="text-center">
                                     <input class="onSale" name="onSale" data-product-id="{{$product->id}}"
                                            @if($product->on_sale) checked @endif type="checkbox" >
                                 </td>
-                                <td class="text-center">
-                                    <button class="btn btn-danger btn-sm">Удалить</button>
-                                </td>
+                                <form method="post" action="{{route('products.destroy', ['user' => $user->id, 'product' => $product->id])}}" >
+                                    @csrf
+                                    @method('delete')
+                                    <td class="text-center">
+                                        <button class="btn btn-danger btn-sm">Удалить</button>
+                                    </td>
+                                </form>
                             </tr>
                         @empty
                         @endforelse

@@ -36,7 +36,7 @@
             <div class="d-flex align-items-center">
                 @if(Auth::user()->shop)
                     <img style="width:45px" class="me-2 avatar-sm rounded-circle"
-                         src="{{$user->shop->getLogoUrl()}}" alt="Luigi Avatar">
+                         src="{{Auth::user()->shop->getLogoUrl()}}" alt="Luigi Avatar">
                 @endif
                 <form action="{{route('logout')}}" method="get">
                     @csrf

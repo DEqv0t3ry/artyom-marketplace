@@ -35,3 +35,9 @@ Route::get('/users/{user}/products/all', [UserController::class, 'products_show'
 Route::get('/users/{user}/products/add', [ProductController::class, 'products_add'])->name('products.add')->middleware(UserHasShop::class);
 
 Route::post('/users/{user}/products', [ProductController::class, 'store'])->name('products.store')->middleware(UserHasShop::class);
+
+Route::delete('users/{user}/products/{product}/destroy', [ProductController::class, 'destroy'])->name('products.destroy')->middleware(UserHasShop::class);
+
+Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit')->middleware(UserHasShop::class);
+
+Route::put('/products/{product}/update', [ProductController::class, 'update'])->name('products.update')->middleware(UserHasShop::class);
