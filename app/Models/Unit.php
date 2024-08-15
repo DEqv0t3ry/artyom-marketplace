@@ -5,23 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Photo extends Model
+class Unit extends Model
 {
     use HasFactory;
 
     protected $guarded = [
         'id',
         'created_at',
-        'updated_at',
-    ];
+        'updated_at',];
     protected $fillable = [
-        'photo',
-    ];
-
-    public function getPhotoUrl()
-    {
-        if ($this->photo) {
-            return url('storage/' . $this->photo);
-        }
-    }
+        'name',
+        'slug'];
 }

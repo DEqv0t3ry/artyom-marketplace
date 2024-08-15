@@ -14,7 +14,7 @@
                         <a class="nav-link" href="{{route('users.show', Auth::id())}}">Профиль</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Товары</a>
+                        <a class="nav-link" href="{{route('user.products.show', Auth::id())}}">Товары</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="">Заявки</a>

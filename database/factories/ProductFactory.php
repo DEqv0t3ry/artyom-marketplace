@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,14 +18,15 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-
+        $unit=Unit::query()->inRandomOrder()->first();
         return [
             'name' => fake()->word(),
             'price' => fake()->numberBetween(100, 10000),
-            'unit' => fake()->word(),
+            'unit_id' => $unit->id,
             'short_description' => fake()->sentence(),
             'photo' => fake()->imageUrl(),
             'main_description' => fake()->realText(),
+            'on_sale' => fake()->boolean(),
         ];
     }
 }

@@ -9,7 +9,7 @@ class CatalogController extends Controller
 {
     public function index()
     {
-        $products = Product::orderBy('created_at', 'desc');
+        $products = Product::where('on_sale', true)->orderBy('created_at', 'desc');
 
         if(request('search')) {
             $products->where('name', 'like', '%' . request('search') . '%') // поиск по имени товара

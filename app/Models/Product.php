@@ -20,10 +20,12 @@ class Product extends Model
     protected $fillable = [
         'name',
         'price',
-        'unit',
+        'unit_id',
+        'user_id',
         'short_description',
         'photo',
         'main_description',
+        'on_sale'
     ];
 
     public function photos(): HasMany
@@ -33,5 +35,17 @@ class Product extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+    public function getThumbnailUrl()
+    {
+        if ($this->photo) {
+            return url('storage/' . $this->photo);
+        }
     }
 }

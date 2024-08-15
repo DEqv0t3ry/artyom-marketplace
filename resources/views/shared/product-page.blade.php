@@ -5,7 +5,7 @@
                 <div class="carousel-inner">
                     @forelse($product->photos as $photo)
                         <div class="carousel-item active">
-                            <img src="{{$photo->photo}}" class="d-block w-100" alt="Фото 1">
+                            <img src="{{$photo->getPhotoUrl()}}" class="d-block w-100" alt="Фото 1">
                         </div>
                     @empty
                         <div class="carousel-item active">
@@ -26,7 +26,7 @@
         <div class="col-md-8">
             <div class="card-body">
                 <h5 class="card-title">{{$product->name}}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Цена: {{$product->price}} ₽ / {{$product->unit}}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">Цена: {{$product->price}} ₽ / {{$product->unit->name}}</h6>
                 <p class="card-text">{{$product->main_description}}</p>
                 <div class="d-flex align-items-center">
                     <img src="{{$product->user->shop->logo}}" alt="Логотип продавца" class="img-fluid me-3" style="max-width: 50px;">

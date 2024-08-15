@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +17,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->double('price');
-            $table->string('unit');
             $table->string('short_description');
             $table->string('photo')->nullable();
             $table->string('main_description')->nullable();
+            $table->boolean('on_sale');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('unit_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
