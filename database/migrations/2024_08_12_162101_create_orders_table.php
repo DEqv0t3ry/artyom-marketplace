@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone')->nullable();
             $table->integer('count');
+            $table->boolean('processed');
             $table->foreignIdFor(Product::class)->cascadeOnDelete();
             $table->timestamps();
         });

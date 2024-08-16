@@ -17,7 +17,7 @@
                         <a class="nav-link" href="{{route('user.products.show', Auth::id())}}">Товары</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Заявки</a>
+                        <a class="nav-link" href="{{route('orders.index', Auth::id())}}">Заявки</a>
                     </li>
                 @endauth
             </ul>

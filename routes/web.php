@@ -41,3 +41,5 @@ Route::delete('users/{user}/products/{product}/destroy', [ProductController::cla
 Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit')->middleware(UserHasShop::class);
 
 Route::put('/products/{product}/update', [ProductController::class, 'update'])->name('products.update')->middleware(UserHasShop::class);
+
+Route::get('/users/{user}/orders', [OrderController::class, 'index'])->name('orders.index')->middleware(UserHasShop::class);

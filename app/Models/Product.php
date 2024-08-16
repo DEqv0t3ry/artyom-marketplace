@@ -42,6 +42,11 @@ class Product extends Model
         return $this->belongsTo(Unit::class);
     }
 
+    public function orders():HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function getThumbnailUrl()
     {
         if ($this->photo) {
