@@ -12,8 +12,14 @@ class OrderController extends Controller
 
     public function index(User $user)
     {
-        return view('users.orders', compact('user'));
+        $orders = $user->products->flatMap->orders->sortByDesc('created_at');
+        if (request()->has('sort') && request('sort') == 'unprocessed') {
+                $orders = $user->products->flatMap->orders->sortBy('processed');
+        }
+
+        return view('users.orders', ['orders' => $orders], compact('user') );
     }
+
     public function store(Product $product)
     {
         //var_dump($product->id);

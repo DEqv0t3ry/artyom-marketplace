@@ -26,7 +26,7 @@ class Order extends Model
         'processed'
     ];
 
-    public function products(): BelongsTo
+    public function product(): BelongsTo
     {
         return $this->BelongsTo(Product::class);
     }
