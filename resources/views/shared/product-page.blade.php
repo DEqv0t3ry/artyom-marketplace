@@ -53,19 +53,31 @@
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label">Имя</label>
-                        <input name="name" type="text" class="form-control" id="name" required>
+                        <input value="{{old('name')}}" name="name" type="text" class="form-control" id="name" required>
+                        @error('name')
+                        <span class="fs-6 text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Электронная почта</label>
-                        <input name="email" type="email" class="form-control" id="email" required>
+                        <input value="{{old('email')}}" name="email" type="email" class="form-control" id="email" required>
+                        @error('email')
+                        <span class="fs-6 text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">Номер телефона</label>
-                        <input name="phone" type="tel" class="form-control" id="phone">
+                        <input value="{{old('phone')}}" name="phone" type="tel" class="form-control" id="phone">
+                        @error('phone')
+                        <span class="fs-6 text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="quantity" class="form-label">Количество</label>
-                        <input name="count" type="number" class="form-control" id="count" value="1" min="1" required>
+                        <label for="count" class="form-label">Количество</label>
+                        <input name="count" type="number" class="form-control" id="count" value="{{old('count')}}" min="1" required>
+                        @error('count')
+                        <span class="fs-6 text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-primary">Купить</button>
                 </form>
@@ -76,9 +88,5 @@
 <script>
     document.getElementById('buyForm').addEventListener('submit', function(event) {
         event.preventDefault();
-
-        // Закрытие модального окна
-        const modal = bootstrap.Modal.getInstance(document.getElementById('buyModal'));
-        modal.hide();
     });
 </script>

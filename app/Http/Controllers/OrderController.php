@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateOrderRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -20,20 +21,13 @@ class OrderController extends Controller
         return view('users.orders', ['orders' => $orders], compact('user') );
     }
 
-    public function store(Product $product)
+    public function store(CreateOrderRequest $request,  Product $product)
     {
-        //var_dump($product->id);
-
-        Order::create(
-            [
-                'name' => request('name'),
-                'email' => request('email'),
-                'phone' => request('phone'),
-                'count' => request('count'),
-                'processed' => false,
-                'product_id' => $product->id
-            ]
-        );
+        $productId = $product->id;
+        $orderData = $request->validated();
+        $orderData['product_id'] = $productId;
+        $orderData['processed'] = false;
+        Order::create($orderData);
 
         return redirect()->route('catalog')->with('success', 'Заказ оформлен');
     }

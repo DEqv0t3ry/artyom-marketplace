@@ -2,7 +2,15 @@
      data-bs-theme="dark">
     <div class="container">
         <a class="navbar-brand fw-light" href=
-            @guest "/" @endguest @auth "{{route('users.show', Auth::id())}}" @endauth><span class="fas fa-brain me-1"> </span>{{ config('app.name') }}</a>
+            @guest "/" @endguest
+        @auth()
+            @if(Auth::user()->role_id === \App\Models\Role::where('slug', \App\Enums\RoleEnum::SHOP->value)->first()->id)
+                "{{route('users.show', Auth::id())}}"
+            @else
+                "{{route('admin.index')}}"
+            @endif
+
+        @endauth><span class="fas fa-brain me-1"> </span>{{ config('app.name') }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -10,15 +18,21 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
                 @auth()
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('users.show', Auth::id())}}">Профиль</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('user.products.show', Auth::id())}}">Товары</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('orders.index', Auth::id())}}">Заявки</a>
-                    </li>
+                    @if(Auth::user()->role_id === \App\Models\Role::where('slug', \App\Enums\RoleEnum::SHOP->value)->first()->id)
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('users.show', Auth::id())}}">Профиль</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('user.products.show', Auth::id())}}">Товары</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('orders.index', Auth::id())}}">Заявки</a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('admin.index')}}">Продавцы</a>
+                        </li>
+                    @endif
                 @endauth
             </ul>
         </div>

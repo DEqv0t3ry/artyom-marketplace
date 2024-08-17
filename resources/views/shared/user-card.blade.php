@@ -1,6 +1,6 @@
 <div class="card">
     @auth()
-        @if(Auth::user()->shop ?? false)
+        @if($user->shop ?? false)
             <div class="card-header text-center bg-dark text-white">
                 Профиль пользователя
             </div>
@@ -13,11 +13,16 @@
                         <h4 class="card-title">{{$user->shop->name}}</h4>
                         <p class="card-text"><strong>ИНН: </strong>{{$user->shop->inn}}</p>
                         <p class="card-text"><strong>Адрес: </strong>{{$user->shop->address}}</p>
-                        @if(Auth::user()->shop->phone)
+                        @if($user->shop->phone)
                             <p class="card-text"><strong>Телефон: </strong>{{$user->shop->phone}}</p>
                         @endif
                     </div>
                 </div>
+                @if(Auth::user()->role_id === 1)
+                    <a href="{{route('admin.users.edit', $user->id)}}">
+                        <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#editModal">Редактировать профиль</button>
+                    </a>
+                @endif
             </div>
         @else
             <div class="card-header text-center bg-dark text-white">

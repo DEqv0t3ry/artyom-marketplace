@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\RoleEnum;
+use App\Http\Requests\CreateUserRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,15 +21,12 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function store(User $user)
+    public function store(CreateUserRequest $request)
     {
-
-        $role = Role::where('slug', RoleEnum::SHOP->value)->first();
-        User::create([
-            'email' => request('email'),
-            'password' => request('password'),
-            'role_id' => $role->id
-        ]);
+        $roleId = Role::where('slug', RoleEnum::SHOP->value)->first()->id;
+        $userData = $request->validated();
+        $userData['role_id'] = $roleId;
+        User::create($userData);
 
         return redirect()->route('catalog')->with('success','Аккаунт успешно создан');
     }
@@ -42,6 +40,11 @@ class AuthController extends Controller
         {
             request()->session()->regenerate();
 
+            //dd(User::orderBy('created_at', 'desc'));
+
+            if(Auth::user()->role_id == Role::where('slug',RoleEnum::ADMIN->value)->first()->id) {
+                return redirect()->route('admin.index')->with('success','Вы успешно вошли');
+            }
             return redirect()->route('users.show', Auth::id())->with('success','Вы успешно вошли');
         }
 

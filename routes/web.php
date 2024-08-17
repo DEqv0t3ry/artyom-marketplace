@@ -43,3 +43,11 @@ Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name
 Route::put('/products/{product}/update', [ProductController::class, 'update'])->name('products.update')->middleware(UserHasShop::class);
 
 Route::get('/users/{user}/orders', [OrderController::class, 'index'])->name('orders.index')->middleware(UserHasShop::class);
+
+Route::get('admin/users', [UserController::class, 'index'])->name('admin.index');
+
+Route::get('admin/users/{user}', [UserController::class, 'edit'])->name('admin.users.edit')->middleware(auth());
+
+Route::delete('admin/users/{user}/destroy', [UserController::class, 'destroy'])->name('users.destroy');
+
+Route::put('admin/users/{user}/update', [UserController::class, 'update'])->name('admin.users.update');
