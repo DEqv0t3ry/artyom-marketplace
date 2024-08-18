@@ -25,3 +25,41 @@ if(processedCheckboxes) {
         });
     });
 }
+
+function deletePhoto(productId) {
+    fetch(`/api/products/${productId}/deletePhoto`, {
+        method: 'delete',
+        body: JSON.stringify({ id: productId }),
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById('product-photo-hide').style.display = 'none';
+                document.getElementById('product-photo-show').style.display = '';
+            } else {
+                // handle error
+            }
+        })
+        .catch(error => {
+            // handle error
+        });
+}
+
+function deleteImages(photoId) {
+    fetch(`/api/photos/${photoId}/deleteImages`, {
+        method: 'delete',
+        body: JSON.stringify({ id: photoId }),
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById('product-photo-'+photoId+'-delete').style.display = 'none';
+                document.getElementById('product-photo-'+photoId+'-add').style.display = '';
+            } else {
+                // handle error
+            }
+        })
+        .catch(error => {
+            // handle error
+        });
+}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\CreateShopRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\Unit;
 use App\Models\User;
@@ -64,6 +65,17 @@ class ProductController extends Controller
         return $product;
     }
 
+    public function deletePhoto(Product $product)
+    {
+        if ($product->photo)
+        {
+            Storage::disk('public')->delete($product->photo);
+        }
+        $product->update([
+            'photo' => null
+        ]);
+    }
+
     public function destroy(User $user, Product $product)
     {
         if($user->id !== $product->user_id) {
@@ -87,56 +99,36 @@ class ProductController extends Controller
         return view('products.edit', compact('product'));
     }
 
-    public function update(Product $product)
+    public function update(UpdateProductRequest $request,  Product $product)
     {
-        $validated = request()->validate([
-            'name' => 'required',
-            'short_description' => 'required',
-            'main_description' => 'required',
-            'price' => 'required',
-            'unit' => 'required',
-            'photo' => 'image',
-            'images.*' => 'image'
-        ]);
-
         if(Auth::id() !== $product->user_id) {
             abort(403);
         }
 
-        if (request()->hasFile('photo'))
+        $productData = $request->validated();
+        $productData['on_sale'] = false;
+
+        if ($request->hasFile('photo'))
         {
-            $validated['photo'] = request('photo')->store('thumbnails', 'public');
+            $productData['photo'] = $productData['photo']->store('thumbnails', 'public');
 
             if ($product->photo)
             {
                 Storage::disk('public')->delete($product->photo);
             }
         }
-        else {
-            unset($validated['photo']);
-        }
 
-        if (request('images'))
+        if ($request->hasFile('images'))
         {
-            $originalImages = $product->photos()->get();
-            $count = 0;
-            foreach (request('images') as $image) {
+            foreach ($request['images'] as $image) {
                 $photoPath = $image->store('images', 'public');
-                if ($originalImages[$count]) {
-                    $product->photos()->update([
-                        'photo' => $photoPath
-                    ]);
-                    $count++;
-                }
-                else{
-                    $product->photos()->create([
-                        'photo' => $photoPath
-                    ]);
-                }
+                $product->photos()->create([
+                    'photo' => $photoPath
+                ]);
             }
         }
 
-        $product->update($validated);
+        $product->update($productData);
 
         return redirect()->route('user.products.show', $product->user_id)->with('success', 'Товар успешно обновлен');
     }

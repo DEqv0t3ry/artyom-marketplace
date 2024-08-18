@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateShopRequest;
+use App\Http\Requests\UpdateShopRequest;
 use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShopController extends Controller
 {
@@ -23,5 +25,16 @@ class ShopController extends Controller
         Shop::create($shopData);
 
         return redirect()->route('users.show', $user->id);
+    }
+    public function update(UpdateShopRequest $request,  Shop $shop)
+    {
+        if (Auth::id() !== $shop->user_id) {
+            abort(403);
+        }
+
+        $shopData = $request->validated();
+        $shop->update($shopData);
+
+        return redirect()->route('users.show', $shop->user_id)->with('success', 'Номер телефона обновлен');
     }
 }

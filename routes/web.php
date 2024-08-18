@@ -51,3 +51,5 @@ Route::get('admin/users', [UserController::class, 'index'])->name('admin.index')
 Route::delete('admin/users/{user}/destroy', [UserController::class, 'destroy'])->name('users.destroy');
 
 Route::put('admin/users/{user}/update', [UserController::class, 'update'])->name('admin.users.update');
+
+Route::put('user/{shop}/update', [ShopController::class, 'update'])->name('shop.update');

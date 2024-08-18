@@ -10,12 +10,19 @@
                         <img src="{{$user->shop->getLogoUrl()}}" class="img-fluid rounded-circle mb-3" alt="Логотип компании" style="max-width: 150px;">
                     </div>
                     <div class="col-md-8">
-                        <h4 class="card-title">{{$user->shop->name}}</h4>
-                        <p class="card-text"><strong>ИНН: </strong>{{$user->shop->inn}}</p>
-                        <p class="card-text"><strong>Адрес: </strong>{{$user->shop->address}}</p>
-                        @if($user->shop->phone)
-                            <p class="card-text"><strong>Телефон: </strong>{{$user->shop->phone}}</p>
-                        @endif
+                        <form action="{{route('shop.update', $user->id)}}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <h4 class="card-title">{{$user->shop->name}}</h4>
+                            <p class="card-text"><strong>ИНН: </strong>{{$user->shop->inn}}</p>
+                            <p class="card-text"><strong>Адрес: </strong>{{$user->shop->address}}</p>
+                            <label for="phone" class="form-label">Телефон:</label>
+                            <input value="{{old('phone') ? old('phone') : $user->shop->phone}}" type="tel" class="form-control" id="phone" name="phone">
+                            @error('phone')
+                            <span class="fs-6 text-danger">{{ $message }}</span>
+                            @enderror
+                            <button type="submit" class="btn btn-primary mt-3">Сохранить</button>
+                        </form>
                     </div>
                 </div>
                 @if(Auth::user()->role_id === 1)
