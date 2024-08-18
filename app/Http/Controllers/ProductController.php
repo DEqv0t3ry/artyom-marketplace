@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProductRequest;
+use App\Http\Requests\CreateShopRequest;
 use App\Models\Product;
 use App\Models\Unit;
 use App\Models\User;
@@ -18,32 +20,28 @@ class ProductController extends Controller
         return view('products.show', compact('product'));
     }
 
-    public function products_add(User $user)
+    public function addProducts(User $user)
     {
         return view('products.add', compact('user'));
     }
 
-    public function store(User $user)
+    public function store(CreateProductRequest $request, User $user)
     {
-        if (request()->hasFile('photo'))
+        $userId = $user->id;
+        $productData = $request->validated();
+        $productData['user_id'] = $userId;
+        $productData['on_sale'] = false;
+
+        if ($request->hasFile('photo'))
         {
-            $thumbnailPath = request('photo')->store('thumbnails', 'public');
+            $productData['photo'] = $productData['photo']->store('thumbnails', 'public');
         }
 
-        $product = Product::create([
-            'name' => request('name'),
-            'short_description' => request('short_description'),
-            'main_description' => request('main_description'),
-            'price' => request('price'),
-            'photo' => $thumbnailPath ?? null,
-            'unit_id' => request('unit'),
-            'user_id' => $user->id,
-            'on_sale' => false,
-        ]);
+        $product = Product::create($productData);
 
-        if (request('images'))
+        if ($request->hasFile('images'))
         {
-            foreach (request('images') as $image) {
+            foreach ($request['images'] as $image) {
                 $photoPath = $image->store('images', 'public');
                 $product->photos()->create([
                     'photo' => $photoPath
@@ -71,6 +69,12 @@ class ProductController extends Controller
         if($user->id !== $product->user_id) {
             abort(403);
         }
+
+        if ($product->photo)
+        {
+            Storage::disk('public')->delete($product->photo);
+        }
+
         $product->delete();
         return redirect()->route('user.products.show', auth()->id())->with('success', 'Товар удален');
     }

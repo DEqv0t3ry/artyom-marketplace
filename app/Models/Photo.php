@@ -16,6 +16,7 @@ class Photo extends Model
     ];
     protected $fillable = [
         'photo',
+        'product_id',
     ];
 
     public function getPhotoUrl()

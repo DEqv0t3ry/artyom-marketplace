@@ -32,7 +32,7 @@ Route::post('/users/{user}', [ShopController::class, 'store'])->name('shop.store
 
 Route::get('/users/{user}/products/all', [UserController::class, 'products_show'])->name('user.products.show')->middleware(UserHasShop::class);
 
-Route::get('/users/{user}/products/add', [ProductController::class, 'products_add'])->name('products.add')->middleware(UserHasShop::class);
+Route::get('/users/{user}/products/add', [ProductController::class, 'addProducts'])->name('products.add')->middleware(UserHasShop::class);
 
 Route::post('/users/{user}/products', [ProductController::class, 'store'])->name('products.store')->middleware(UserHasShop::class);
 
@@ -46,7 +46,7 @@ Route::get('/users/{user}/orders', [OrderController::class, 'index'])->name('ord
 
 Route::get('admin/users', [UserController::class, 'index'])->name('admin.index');
 
-Route::get('admin/users/{user}', [UserController::class, 'edit'])->name('admin.users.edit')->middleware(auth());
+//Route::get('admin/users/{user}', [UserController::class, 'edit'])->name('admin.users.edit')->middleware(auth());
 
 Route::delete('admin/users/{user}/destroy', [UserController::class, 'destroy'])->name('users.destroy');
 

@@ -23,7 +23,8 @@ class OrderFactory extends Factory
             'email' => fake()->safeEmail(),
             'phone' => fake()->phoneNumber(),
             'count' => fake()->numberBetween(1, 10),
-            'product_id' => $product->id
+            'product_id' => $product->id,
+            'processed' => fake()->boolean()
         ];
     }
 }

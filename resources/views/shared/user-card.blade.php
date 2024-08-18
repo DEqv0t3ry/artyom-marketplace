@@ -35,25 +35,40 @@
                         <div class="col-md-4 text-center">
                             <div class="mb-3">
                                 <label for="logo" class="form-label">Логотип компании</label>
-                                <input class="form-control" type="file" id="logo" name="logo" accept=".jpg, .jpeg, .webp" max="2097152">
+                                <input class="form-control" type="file" id="logo" name="logo">
+                                @error('logo')
+                                <span class="fs-6 text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label for="company_name" class="form-label">Наименование продавца</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
+                                <input value="{{old('name')}}" type="text" class="form-control" id="name" name="name" required>
+                                @error('name')
+                                <span class="fs-6 text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="inn" class="form-label">ИНН</label>
-                                <input type="text" class="form-control" id="inn" name="inn" required>
+                                <input value="{{old('inn')}}" type="text" class="form-control" id="inn" name="inn" required>
+                                @error('inn')
+                                <span class="fs-6 text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="address" class="form-label">Адрес</label>
-                                <input type="text" class="form-control" id="address" name="address" required>
+                                <input value="{{old('address')}}" type="text" class="form-control" id="address" name="address" required>
+                                @error('address')
+                                <span class="fs-6 text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Телефон</label>
-                                <input type="tel" class="form-control" id="phone" name="phone">
+                                <input value="{{old('phone')}}" type="tel" class="form-control" id="phone" name="phone">
+                                @error('phone')
+                                <span class="fs-6 text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>
