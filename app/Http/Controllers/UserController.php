@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateShopRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -28,25 +31,27 @@ class UserController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $requestUser, UpdateShopRequest $requestShop, User $user)
     {
-        $validatedShop = $request->validate([
-            'logo' => 'image',
-            'name' => 'required',
-            'inn' => 'required',
-            'address' => 'required',
-            'phone' => ''
-        ]);
-        $validatedUser = $request->validate([
-            'email' => 'required',
-        ]);
-        if($request['password'])
-        {
-            $validatedUser['password'] = $request->password;
+        $userData = $requestUser->validated();
+        $shopData = $requestShop->validated();
+
+        if ($userData['password'] == null) {
+            unset($userData['password']);
         }
 
-        $user->shop->update($validatedShop);
-        $user->update($validatedUser);
+        if($requestShop->hasFile('logo')) {
+            $shopData['logo'] = $requestShop->file('logo')->store('logos', 'public');
+
+            if ($user->shop && $user->shop->logo)
+            {
+                Storage::disk('public')->delete($user->shop->logo);
+            }
+        }
+
+        $user->update($userData);
+
+        $user->shop ?$user->shop->update($shopData) : $user->shop()->create($shopData);
 
         return redirect()->route('admin.index')->with('success','Данные продавца успешно обновлены');
     }

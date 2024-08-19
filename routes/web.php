@@ -46,7 +46,7 @@ Route::get('/users/{user}/orders', [OrderController::class, 'index'])->name('ord
 
 Route::get('admin/users', [UserController::class, 'index'])->name('admin.index');
 
-//Route::get('admin/users/{user}', [UserController::class, 'edit'])->name('admin.users.edit')->middleware(auth());
+Route::get('admin/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware('auth');
 
 Route::delete('admin/users/{user}/destroy', [UserController::class, 'destroy'])->name('users.destroy');
 

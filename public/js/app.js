@@ -63,3 +63,22 @@ function deleteImages(photoId) {
             // handle error
         });
 }
+
+function deleteLogo(shopId) {
+    fetch(`/api/shops/${shopId}/deleteLogo`, {
+        method: 'delete',
+        body: JSON.stringify({ id: shopId }),
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById('logo-'+shopId+'-delete').style.display = 'none';
+                document.getElementById('logo-'+shopId+'-add').style.display = '';
+            } else {
+                // handle error
+            }
+        })
+        .catch(error => {
+            // handle error
+        });
+}

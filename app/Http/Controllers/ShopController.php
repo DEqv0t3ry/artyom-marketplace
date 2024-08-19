@@ -8,6 +8,7 @@ use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ShopController extends Controller
 {
@@ -36,5 +37,15 @@ class ShopController extends Controller
         $shop->update($shopData);
 
         return redirect()->route('users.show', $shop->user_id)->with('success', 'Номер телефона обновлен');
+    }
+
+    public function deleteLogo(Shop $shop)
+    {
+        if($shop->logo) {
+            Storage::disk('public')->delete($shop->logo);
+            $shop->update([
+                'logo' => null
+            ]);
+        }
     }
 }

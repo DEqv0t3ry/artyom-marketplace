@@ -17,7 +17,8 @@
                                 @method('PUT')
                                 <div class="mb-3">
                                     <label for="product_name" class="form-label">Наименование товара</label>
-                                    <input type="text" value="{{old('name') ? old('name') : $product->name}}" class="form-control" id="name" name="name" required>
+                                    <input type="text" value="{{old('name') ? old('name') : $product->name}}"
+                                           class="form-control" id="name" name="name" required>
                                     @error('name')
                                     <span class="fs-6 text-danger">{{ $message }}</span>
                                     @enderror
@@ -46,14 +47,16 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="short_description" class="form-label">Краткое описание (анонс)</label>
-                                    <textarea class="form-control" id="short_description" name="short_description" rows="2" required>{{$product->short_description}}</textarea>
+                                    <textarea class="form-control" id="short_description" name="short_description"
+                                              rows="2" required>{{$product->short_description}}</textarea>
                                     @error('short_description')
                                     <span class="fs-6 text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label for="short_description" class="form-label">Основное описание</label>
-                                    <textarea class="form-control" id="main_description" name="main_description" rows="5" required>{{$product->main_description}}</textarea>
+                                    <textarea class="form-control" id="main_description" name="main_description"
+                                              rows="5" required>{{$product->main_description}}</textarea>
                                     @error('main_description')
                                     <span class="fs-6 text-danger">{{ $message }}</span>
                                     @enderror
