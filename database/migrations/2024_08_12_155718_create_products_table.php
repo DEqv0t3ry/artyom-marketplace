@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->double('price');
             $table->string('short_description');
-            $table->string('photo')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->string('main_description')->nullable();
             $table->boolean('on_sale');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

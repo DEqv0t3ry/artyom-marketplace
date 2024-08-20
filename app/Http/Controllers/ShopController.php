@@ -9,6 +9,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use MoveMoveIo\DaData\Enums\BranchType;
+use MoveMoveIo\DaData\Enums\CompanyType;
+use MoveMoveIo\DaData\Facades\DaDataCompany;
 
 class ShopController extends Controller
 {
@@ -46,6 +49,16 @@ class ShopController extends Controller
             $shop->update([
                 'logo' => null
             ]);
+        }
+    }
+
+    public function checkInn(Request $inn)
+    {
+        try {
+            $dadata = DaDataCompany::id($inn['inn'], 1, null, BranchType::MAIN, CompanyType::LEGAL);
+            return response()->json(['address' => $dadata['suggestions'][0]['data']['address']['value']]);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
         }
     }
 }

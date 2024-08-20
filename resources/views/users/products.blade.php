@@ -33,7 +33,7 @@
                                     <input class="onSale" name="onSale" data-product-id="{{$product->id}}"
                                            @if($product->on_sale) checked @endif type="checkbox" >
                                 </td>
-                                <form method="post" action="{{route('products.destroy', ['user' => $user->id, 'product' => $product->id])}}" >
+                                <form method="post" action="{{route('products.destroy', ['product' => $product->id])}}" >
                                     @csrf
                                     @method('delete')
                                     <td class="text-center">

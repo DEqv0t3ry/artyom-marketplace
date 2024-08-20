@@ -10,7 +10,7 @@
                     @include('shared.success-message')
                     <div class="form-group mt-3">
                         <label for="email" class="text-dark">Email:</label><br>
-                        <input type="email" name="email" id="email" class="form-control">
+                        <input value="{{old('email')}}" type="email" name="email" id="email" class="form-control">
                         @error('email')
                         <span class="fs-6 text-danger">{{ $message }}</span>
                         @enderror
@@ -36,7 +36,6 @@
                     <div class="text-right mt-2">
                         <a href="/login" class="text-dark">Уже есть аккаунт? Войти здесь</a>
                     </div>
-
                 </form>
             </div>
         </div>

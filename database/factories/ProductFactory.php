@@ -24,7 +24,7 @@ class ProductFactory extends Factory
             'price' => fake()->numberBetween(100, 10000),
             'unit_id' => $unit->id,
             'short_description' => fake()->sentence(),
-            'photo' => fake()->imageUrl(),
+            'thumbnail' => fake()->imageUrl(),
             'main_description' => fake()->realText(),
             'on_sale' => fake()->boolean(),
         ];

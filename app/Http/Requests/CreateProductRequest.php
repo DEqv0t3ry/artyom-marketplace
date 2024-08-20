@@ -27,7 +27,7 @@ class CreateProductRequest extends FormRequest
             'unit_id' => 'required',
             'short_description' => 'required|max:100',
             'main_description' => 'required|max:10000',
-            'photo' => 'image|mimes:jpg,jpeg,webp|max:2048',
+            'thumbnail' => 'image|mimes:jpg,jpeg,webp|max:2048',
             'images.*' => 'image|mimes:jpg,jpeg,webp|max:2048',
         ];
     }
@@ -46,9 +46,9 @@ class CreateProductRequest extends FormRequest
             'short_description.max' => 'Поле "Краткое описание" не может быть больше 100 символов',
             'main_description.required' => 'Поле "Описание" обязательно для заполнения',
             'main_description.max' => 'Поле "Описание" не может быть больше 10000 символов',
-            'photo.image' => 'Фотография-анонс должна быть изображением',
-            'photo.mimes' => 'Фотография-анонс должна быть в формате jpg, jpeg или png',
-            'photo.max' => 'Фотография-анонс не может быть больше 2 мегабайт',
+            'thumbnail.image' => 'Фотография-анонс должна быть изображением',
+            'thumbnail.mimes' => 'Фотография-анонс должна быть в формате jpg, jpeg или png',
+            'thumbnail.max' => 'Фотография-анонс не может быть больше 2 мегабайт',
             'images.*.image' => 'Фотографии должны быть изображениями',
             'images.*.mimes' => 'Фотографии должны быть в формате jpg, jpeg или png',
             'images.*.max' => 'Фотографии не могут быть больше 2 мегабайт',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\InnRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateShopRequest extends FormRequest
@@ -23,7 +24,7 @@ class UpdateShopRequest extends FormRequest
     {
         return [
             'name' => 'max:200',
-            'inn' => 'numeric|digits:10',
+            'inn' => [new InnRule],
             'address' => 'min:20',
             'phone' => 'max:100',
             'logo' => 'image|mimes:jpg,jpeg,webp|max:2048',
@@ -33,8 +34,6 @@ class UpdateShopRequest extends FormRequest
     {
         return [
             'name.max' => 'Поле "Наименование продавца" не может быть больше 200 символов',
-            'inn.numeric' => 'Поле "ИНН" должно содержать только цифры',
-            'inn.digits' => 'Поле "ИНН" должно содержать 10 цифр',
             'address.min' => 'Поле "Адрес" должно содержать не менее 20 символов',
             'phone.max' => 'Поле "Телефон" не может быть больше 100 символов',
             'logo.image' => 'Логотип должен быть изображением',

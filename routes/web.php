@@ -10,13 +10,13 @@ use App\Http\Middleware\UserHasShop;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [CatalogController::class, 'index'])->name('catalog')->middleware('guest');
+Route::get('/', [CatalogController::class, 'index'])->name('catalog');
 
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-
-Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/register',[AuthController::class, 'register'])->name('register');
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
+
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 Route::post('/products/{product}/orders', [OrderController::class, 'store'])->name('orders.store');
 
@@ -26,21 +26,28 @@ Route::get('/users',[AuthController::class, 'authenticate'])->name('users.login'
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+//Отображение пользователя
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show')->middleware('can:view,user');
 
-Route::post('/users/{user}', [ShopController::class, 'store'])->name('shop.store');
+//Отображение формы добавления магазина
+Route::post('/users/{user}', [ShopController::class, 'store'])->name('shop.store')->middleware('can:create,shop');
 
 Route::get('/users/{user}/products/all', [UserController::class, 'products_show'])->name('user.products.show')->middleware(UserHasShop::class);
 
+//Отображение формы добавления продукта
 Route::get('/users/{user}/products/add', [ProductController::class, 'addProducts'])->name('products.add')->middleware(UserHasShop::class);
 
+//Добавление продукта
 Route::post('/users/{user}/products', [ProductController::class, 'store'])->name('products.store')->middleware(UserHasShop::class);
 
-Route::delete('users/{user}/products/{product}/destroy', [ProductController::class, 'destroy'])->name('products.destroy')->middleware(UserHasShop::class);
+//Удаление продукта
+Route::delete('/products/{product}/destroy', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('can:delete,product');
 
-Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit')->middleware(UserHasShop::class);
+//Отображение формы редактирования продукта
+Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit')->middleware('can:edit,product');
 
-Route::put('/products/{product}/update', [ProductController::class, 'update'])->name('products.update')->middleware(UserHasShop::class);
+//Обновление данных продукта
+Route::put('/products/{product}/update', [ProductController::class, 'update'])->name('products.update')->middleware('can:update,product');
 
 Route::get('/users/{user}/orders', [OrderController::class, 'index'])->name('orders.index')->middleware(UserHasShop::class);
 
@@ -52,4 +59,5 @@ Route::delete('admin/users/{user}/destroy', [UserController::class, 'destroy'])-
 
 Route::put('admin/users/{user}/update', [UserController::class, 'update'])->name('admin.users.update');
 
-Route::put('user/{shop}/update', [ShopController::class, 'update'])->name('shop.update');
+//Обновление данных магазина
+Route::put('user/{shop}/update', [ShopController::class, 'update'])->name('shop.update')->middleware('can:update,shop');

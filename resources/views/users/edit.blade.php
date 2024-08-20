@@ -51,6 +51,9 @@
                                 @error('inn')
                                 <span class="fs-6 text-danger">{{ $message }}</span>
                                 @enderror
+                                <div>
+                                    <button type="button" onclick="checkInn(document.getElementById('inn').value)" class="btn btn-primary mt-2">Получить адрес по ИНН</button>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="address" class="form-label">Адрес</label>

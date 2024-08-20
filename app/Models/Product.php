@@ -23,7 +23,7 @@ class Product extends Model
         'unit_id',
         'user_id',
         'short_description',
-        'photo',
+        'thumbnail',
         'main_description',
         'on_sale'
     ];
@@ -49,8 +49,8 @@ class Product extends Model
 
     public function getThumbnailUrl()
     {
-        if ($this->photo) {
-            return url('storage/' . $this->photo);
+        if ($this->thumbnail) {
+            return url('storage/' . $this->thumbnail);
         }
     }
 }

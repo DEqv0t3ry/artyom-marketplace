@@ -82,3 +82,25 @@ function deleteLogo(shopId) {
             // handle error
         });
 }
+
+function checkInn(shopInn) {
+    fetch(`/api/shops/checkInn`, {
+        method: 'post',
+        body: JSON.stringify({ inn: shopInn }),
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then(function (responce) {
+            return responce.json();
+        })
+        .then(function (json) {
+            document.getElementById('address').value = json.address;
+        })
+        .catch(error => {
+            // handle error
+        });
+}
+
+
+document.getElementById('buyForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+});

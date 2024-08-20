@@ -16,8 +16,6 @@ class ProductController extends Controller
 {
     public function show(Product $product)
     {
-        $showingProduct = true;
-
         return view('products.show', compact('product'));
     }
 
@@ -33,9 +31,9 @@ class ProductController extends Controller
         $productData['user_id'] = $userId;
         $productData['on_sale'] = false;
 
-        if ($request->hasFile('photo'))
+        if ($request->hasFile('thumbnail'))
         {
-            $productData['photo'] = $productData['photo']->store('thumbnails', 'public');
+            $productData['thumbnail'] = $productData['thumbnail']->store('thumbnails', 'public');
         }
 
         $product = Product::create($productData);
@@ -67,54 +65,43 @@ class ProductController extends Controller
 
     public function deletePhoto(Product $product)
     {
-        if ($product->photo)
+        if ($product->thumbnail)
         {
-            Storage::disk('public')->delete($product->photo);
+            Storage::disk('public')->delete($product->thumbnail);
         }
         $product->update([
-            'photo' => null
+            'thumbnail' => null
         ]);
     }
 
-    public function destroy(User $user, Product $product)
+    public function destroy(Product $product)
     {
-        if($user->id !== $product->user_id) {
-            abort(403);
-        }
-
-        if ($product->photo)
+        if ($product->thumbnail)
         {
-            Storage::disk('public')->delete($product->photo);
+            Storage::disk('public')->delete($product->thumbnail);
         }
 
         $product->delete();
-        return redirect()->route('user.products.show', auth()->id())->with('success', 'Товар удален');
+        return redirect()->route('user.products.show', Auth::id())->with('success', 'Товар удален');
     }
 
     public function edit(Product $product)
     {
-        if(Auth::id() !== $product->user_id) {
-            abort(403);
-        }
         return view('products.edit', compact('product'));
     }
 
     public function update(UpdateProductRequest $request,  Product $product)
     {
-        if(Auth::id() !== $product->user_id) {
-            abort(403);
-        }
-
         $productData = $request->validated();
         $productData['on_sale'] = false;
 
         if ($request->hasFile('photo'))
         {
-            $productData['photo'] = $productData['photo']->store('thumbnails', 'public');
+            $productData['thumbnail'] = $productData['thumbnail']->store('thumbnails', 'public');
 
-            if ($product->photo)
+            if ($product->thumbnail)
             {
-                Storage::disk('public')->delete($product->photo);
+                Storage::disk('public')->delete($product->thumbnail);
             }
         }
 

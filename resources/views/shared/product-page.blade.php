@@ -85,8 +85,3 @@
         </div>
     </div>
 </div>
-<script>
-    document.getElementById('buyForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-    });
-</script>

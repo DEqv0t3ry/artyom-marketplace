@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\InnRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateShopRequest extends FormRequest
@@ -23,7 +24,7 @@ class CreateShopRequest extends FormRequest
     {
         return [
             'name' => 'required|max:200',
-            'inn' => 'required|numeric|digits:10',
+            'inn' => [new InnRule],
             'address' => 'required|min:20',
             'phone' => 'max:100',
             'logo' => 'image|mimes:jpg,jpeg,webp|max:2048',

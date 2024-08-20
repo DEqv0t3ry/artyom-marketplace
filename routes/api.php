@@ -17,3 +17,5 @@ Route::delete('/products/{product}/deletePhoto', [ProductController::class, 'del
 Route::delete('/photos/{photo}/deleteImages', [PhotoController::class, 'delete'])->name('products.deleteImages');
 
 Route::delete('shops/{shop}/deleteLogo', [ShopController::class, 'deleteLogo'])->name('shops.deleteLogo');
+
+Route::post('/shops/checkInn', [ShopController::class, 'checkInn'])->name('shops.checkInn');
