@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="thumbnail" class="form-label">Фотография-анонс</label>
-                                    <input class="form-control" type="file" id="photo" name="photo" accept=".jpg, .jpeg, .webp">
+                                    <input class="form-control" type="file" id="thumbnail" name="thumbnail" accept=".jpg, .jpeg, .webp">
                                     @error('photo')
                                     <span class="fs-6 text-danger">{{ $message }}</span>
                                     @enderror

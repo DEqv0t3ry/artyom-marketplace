@@ -12,7 +12,7 @@ Route::get('/product/{product}/set-status', [ProductController::class, 'changeSt
 
 Route::get('/order/{order}/set-status', [OrderController::class, 'changeStatus']);
 
-Route::delete('/products/{product}/deletePhoto', [ProductController::class, 'deletePhoto'])->name('products.deletePhoto');
+Route::delete('/products/{product}/deletePhoto', [ProductController::class, 'deleteThumbnail'])->name('products.deletePhoto');
 
 Route::delete('/photos/{photo}/deleteImages', [PhotoController::class, 'delete'])->name('products.deleteImages');
 

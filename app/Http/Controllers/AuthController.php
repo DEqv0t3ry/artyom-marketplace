@@ -6,11 +6,15 @@ use App\Enums\RoleEnum;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        private readonly AuthService $authService,
+    ){}
     public function register()
     {
         return view('auth.register');
@@ -23,10 +27,7 @@ class AuthController extends Controller
 
     public function store(CreateUserRequest $request)
     {
-        $roleId = Role::where('slug', RoleEnum::SHOP->value)->first()->id;
-        $userData = $request->validated();
-        $userData['role_id'] = $roleId;
-        User::create($userData);
+        $this->authService->createUser($request->validated());
 
         return redirect()->route('catalog')->with('success','Аккаунт успешно создан');
     }
@@ -39,8 +40,6 @@ class AuthController extends Controller
         ]))
         {
             request()->session()->regenerate();
-
-            //dd(User::orderBy('created_at', 'desc'));
 
             if(Auth::user()->role_id == Role::where('slug',RoleEnum::ADMIN->value)->first()->id) {
                 return redirect()->route('admin.index')->with('success','Вы успешно вошли');
@@ -55,9 +54,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        auth()->logout();
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
+        $this->authService->logoutUser();
 
         return redirect()->route('catalog')->with('success','Вы вышли из аккаунта');
     }

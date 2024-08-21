@@ -10,11 +10,11 @@ use App\Http\Middleware\UserHasShop;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [CatalogController::class, 'index'])->name('catalog');
+Route::get('/', [CatalogController::class, 'index'])->name('catalog')->middleware('guest');
 
 Route::get('/register',[AuthController::class, 'register'])->name('register');
 
-Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
 
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
@@ -27,10 +27,10 @@ Route::get('/users',[AuthController::class, 'authenticate'])->name('users.login'
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //Отображение пользователя
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show')->middleware('can:view,user');
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 
 //Отображение формы добавления магазина
-Route::post('/users/{user}', [ShopController::class, 'store'])->name('shop.store')->middleware('can:create,shop');
+Route::post('/users/{user}', [ShopController::class, 'store'])->name('shop.store');
 
 Route::get('/users/{user}/products/all', [UserController::class, 'products_show'])->name('user.products.show')->middleware(UserHasShop::class);
 

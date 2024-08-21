@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\CatalogService;
 use Illuminate\Http\Request;
+use function Laravel\Prompts\search;
 
 class CatalogController extends Controller
 {
-    public function index()
+    public function __construct(
+        private readonly CatalogService $catalogService,
+    )
     {
-        $products = Product::where('on_sale', true)->orderBy('created_at', 'desc');
-
-        if(request('search')) {
-            $products->where('name', 'like', '%' . request('search') . '%') // поиск по имени товара
-            ->orWhereHas('user.shop', fn($query) => $query->where('name', 'like', '%' . request('search') . '%')); // поиск по названию продавца
-        }
-
+    }
+    public function index(Request $request)
+    {
         return view('catalog',
         [
-            'products' => $products->paginate(5),
+            'products' => $this->catalogService->getProducts($request->get('search',null)),
         ]);
     }
 }

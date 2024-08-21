@@ -64,7 +64,7 @@
                                 <div class="mb-3">
                                     <hr>
                                     <label for="thumbnail" class="form-label">Фотография-анонс</label>
-                                    @if($product->photo)
+                                    @if($product->thumbnail)
                                         <div id="product-photo-hide" class="mb-2">
                                             <img src="{{$product->getThumbnailUrl()}}" class="img-thumbnail"
                                                  alt="Изображение товара" style="max-width: 200px;">
@@ -74,9 +74,9 @@
                                                          class="btn btn-danger">Удалить фото</button>
                                             </div>
                                         </div>
-                                        <input style="display: none" class="form-control mt-3" type="file" id="product-photo-show" name="photo" accept=".jpg, .jpeg, .webp">
+                                        <input style="display: none" class="form-control mt-3" type="file" id="product-photo-show" name="thumbnail" accept=".jpg, .jpeg, .webp">
                                     @else
-                                        <input class="form-control mt-3" type="file" id="photo" name="photo" accept=".jpg, .jpeg, .webp">
+                                        <input class="form-control mt-3" type="file" id="thumbnail" name="thumbnail" accept=".jpg, .jpeg, .webp">
                                     @endif
                                     @error('photo')
                                     <span class="fs-6 text-danger">{{ $message }}</span>

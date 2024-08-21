@@ -6,43 +6,33 @@ use App\Http\Requests\CreateOrderRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\OrderService;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public function __construct(
+        private readonly OrderService $orderService,
+    ) {}
 
     public function index(User $user)
     {
-        $orders = $user->products->flatMap->orders->sortByDesc('created_at');
-        if (request()->has('sort') && request('sort') == 'unprocessed') {
-                $orders = $user->products->flatMap->orders->sortBy('processed');
-        }
-
-        return view('users.orders', ['orders' => $orders], compact('user') );
+        return view('users.orders',
+            [
+                'orders' => $this->orderService->getOrders($user)
+            ],
+            compact('user') );
     }
 
     public function store(CreateOrderRequest $request,  Product $product)
     {
-        $productId = $product->id;
-        $orderData = $request->validated();
-        $orderData['product_id'] = $productId;
-        $orderData['processed'] = false;
-        Order::create($orderData);
+        $this->orderService->createOrder($request->validated(), $product);
 
         return redirect()->route('catalog')->with('success', 'Заказ оформлен');
     }
 
     public function changeStatus(Request $request, Order $order)
     {
-        $request->validate([
-            'status' => 'required|bool'
-        ]);
-        $order->update([
-            'processed' => $request->get('status') ? 1 : 0
-        ]);
-
-        //dd($request->get('status'));
-
-        return $order;
+        $this->orderService->changeOrderStatus($request, $order);
     }
 }

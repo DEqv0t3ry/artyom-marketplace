@@ -6,6 +6,7 @@ use App\Http\Requests\CreateShopRequest;
 use App\Http\Requests\UpdateShopRequest;
 use App\Models\Shop;
 use App\Models\User;
+use App\Services\ShopService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,50 +16,30 @@ use MoveMoveIo\DaData\Facades\DaDataCompany;
 
 class ShopController extends Controller
 {
+    public function __construct(
+        private readonly ShopService $shopService
+    ){}
+
     public function store(CreateShopRequest $request,  User $user)
     {
-        $userId = $user->id;
-        $shopData = $request->validated();
-        $shopData['user_id'] = $userId;
-
-        if ($request->hasFile('logo'))
-        {
-            $shopData['logo'] = $shopData['logo']->store('logos', 'public');
-        }
-
-        Shop::create($shopData);
+        $this->shopService->createShop($request, $user);
 
         return redirect()->route('users.show', $user->id);
     }
     public function update(UpdateShopRequest $request,  Shop $shop)
     {
-        if (Auth::id() !== $shop->user_id) {
-            abort(403);
-        }
-
-        $shopData = $request->validated();
-        $shop->update($shopData);
+        $this->shopService->updateShop($request, $shop);
 
         return redirect()->route('users.show', $shop->user_id)->with('success', 'Номер телефона обновлен');
     }
 
     public function deleteLogo(Shop $shop)
     {
-        if($shop->logo) {
-            Storage::disk('public')->delete($shop->logo);
-            $shop->update([
-                'logo' => null
-            ]);
-        }
+        $this->shopService->deleteLogo($shop);
     }
 
     public function checkInn(Request $inn)
     {
-        try {
-            $dadata = DaDataCompany::id($inn['inn'], 1, null, BranchType::MAIN, CompanyType::LEGAL);
-            return response()->json(['address' => $dadata['suggestions'][0]['data']['address']['value']]);
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-        }
+        return response()->json(['address' => $this->shopService->checkInn($inn)]);
     }
 }

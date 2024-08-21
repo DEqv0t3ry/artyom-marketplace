@@ -5,22 +5,24 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateShopRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private readonly UserService $userService,
+    ){}
+
     public function index()
     {
-        $users = User::where('role_id', 2)->get();
-
-        return view('admin.users', ['users' => $users]);
+        return view('admin.users', ['users' => $this->userService->getUsers()]);
     }
+
     public function show(User $user)
     {
-        if ($user->can('view', $user)) {
-            return view('users.show', compact('user'));
-        }
+        return view('users.show', compact('user'));
     }
 
     public function products_show(User $user)
@@ -35,32 +37,15 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $requestUser, UpdateShopRequest $requestShop, User $user)
     {
-        $userData = $requestUser->validated();
-        $shopData = $requestShop->validated();
-
-        if ($userData['password'] == null) {
-            unset($userData['password']);
-        }
-
-        if($requestShop->hasFile('logo')) {
-            $shopData['logo'] = $requestShop->file('logo')->store('logos', 'public');
-
-            if ($user->shop && $user->shop->logo)
-            {
-                Storage::disk('public')->delete($user->shop->logo);
-            }
-        }
-
-        $user->update($userData);
-
-        $user->shop ?$user->shop->update($shopData) : $user->shop()->create($shopData);
+        $this->userService->updateUser($requestUser->validated(), $requestShop, $user);
 
         return redirect()->route('admin.index')->with('success','Данные продавца успешно обновлены');
     }
 
     public function destroy(User $user)
     {
-        $user->delete();
+        $this->userService->deleteUser($user);
+
         return redirect()->route('admin.index')->with('success','Пользователь успешно удалён');
     }
 }
