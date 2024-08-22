@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Http\Requests\CreateOrderRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -10,6 +9,12 @@ use Illuminate\Http\Request;
 
 class OrderService
 {
+    public function __construct(
+        private readonly MailService $mailService,
+    )
+    {
+    }
+
     public function getOrders(User $user)
     {
         return $user->products->flatMap->orders->sortByDesc('created_at')
@@ -22,7 +27,20 @@ class OrderService
     {
         $request['product_id'] = $product->id;
         $request['processed'] = false;
-        return Order::create($request);
+        $request['phone'] = $this->phoneClear($request['phone']);
+
+        $order = Order::create($request);
+
+        $this->mailService->sendOrder($order);
+    }
+
+    public function phoneClear($phone){
+        $phone = mb_eregi_replace("[^0-9]", '', $phone);
+        if(strlen($phone) > 9){
+            $data = '+7'.substr($phone, -10);
+        }
+        else $data = '';
+        return $data;
     }
 
     public function changeOrderStatus(Request $request, Order $order)

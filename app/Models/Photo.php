@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DefaultImagesEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,7 @@ class Photo extends Model
         if ($this->photo) {
             return url('storage/' . $this->photo);
         }
+
+        return url(DefaultImagesEnum::PRODUCT_PHOTO->value);
     }
 }

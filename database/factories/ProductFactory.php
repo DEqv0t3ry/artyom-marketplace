@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\DefaultImagesEnum;
 use App\Models\Product;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,9 +25,9 @@ class ProductFactory extends Factory
             'price' => fake()->numberBetween(100, 10000),
             'unit_id' => $unit->id,
             'short_description' => fake()->sentence(),
-            'thumbnail' => fake()->imageUrl(),
             'main_description' => fake()->realText(),
             'on_sale' => fake()->boolean(),
+            'created_at' => fake()->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

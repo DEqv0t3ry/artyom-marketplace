@@ -26,6 +26,7 @@ class UpdateProductRequest extends FormRequest
             'price' => 'numeric|min:1',
             'short_description' => 'max:100',
             'main_description' => 'max:10000',
+            'unit_id' => '',
             'photo' => 'image|mimes:jpg,jpeg,webp|max:2048',
             'images.*' => 'image|mimes:jpg,jpeg,webp|max:2048',
         ];

@@ -22,8 +22,8 @@ class UserService
     {
         $shopData = $requestShop->validated();
 
-        if ($requestShop['password'] == null) {
-            unset($requestShop['password']);
+        if ($requestUser['password'] == null) {
+            unset($requestUser['password']);
         }
 
         if($requestShop->hasFile('logo')) {

@@ -29,7 +29,7 @@
                 <h6 class="card-subtitle mb-2 text-muted">Цена: {{$product->price}} ₽ / {{$product->unit->name}}</h6>
                 <p class="card-text">{{$product->main_description}}</p>
                 <div class="d-flex align-items-center">
-                    <img src="{{$product->user->shop->logo}}" alt="Логотип продавца" class="img-fluid me-3" style="max-width: 50px;">
+                    <img src="{{$product->user->shop->getLogoUrl()}}" alt="Логотип продавца" class="img-fluid me-3" style="max-width: 50px;">
                     <div>
                         <h6 class="mb-0">{{$product->user->shop->name}}</h6>
                         <p class="mb-0">Телефон: {{$product->user->shop->phone}}</p>
@@ -79,7 +79,7 @@
                         <span class="fs-6 text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <button type="submit" class="btn btn-primary">Купить</button>
+                    <button type="submit" class="btn btn-primary">Заказать</button>
                 </form>
             </div>
         </div>

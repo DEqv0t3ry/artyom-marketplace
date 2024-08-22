@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Enums\RoleEnum;
+use App\Models\Role;
 use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -15,13 +17,6 @@ class ShopPolicy
     public function __construct()
     {
         //
-    }
-
-    public function create(User $user) : Response
-    {
-        return Auth::id() === $user->id
-            ? Response::allow()
-            : Response::deny('У вас нет прав на создание магазина для этого пользователя');
     }
 
     public function update(User $user, Shop $shop) : Response

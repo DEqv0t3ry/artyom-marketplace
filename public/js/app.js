@@ -99,8 +99,3 @@ function checkInn(shopInn) {
             // handle error
         });
 }
-
-
-document.getElementById('buyForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-});

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Enums\RoleEnum;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Console\Command;
 
 class CreateAdminCommand extends Command
@@ -13,7 +14,7 @@ class CreateAdminCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'user:create {--u|username= : Username of the newly created user.} {--e|email= : E-Mail of the newly created user.}';
+    protected $signature = 'admin:create {--u|username= : Имя пользователя.} {--e|email= : Почта.}';
 
     /**
      * The console command description.
@@ -40,15 +41,13 @@ class CreateAdminCommand extends Command
         $password = $this->secret('Введите пароль');
 
         $role = Role::where('slug', RoleEnum::ADMIN->value)->first();
-        $user = \App\Models\User::create([
+        User::create([
             'username' => $username,
             'email' => $email,
             'password' => $password,
             'role_id' => $role->id,
         ]);
 
-        //$user->assignRole('admin');'
-
-        $this->info('Пользователь успешно создан');
+        $this->info('Администратор успешно создан');
     }
 }

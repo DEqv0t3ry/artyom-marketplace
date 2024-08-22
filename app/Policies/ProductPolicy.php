@@ -13,15 +13,19 @@ class ProductPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(Product $product): Response
+    public function view(?User $user, Product $product): Response
     {
-
+        if($product->on_sale == true)
+        {
+            return Response::allow();
+        }
+        return Response::deny('Этот продукт не доступен');
     }
 
     /**

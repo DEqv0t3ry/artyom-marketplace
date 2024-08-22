@@ -8,56 +8,90 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\UserHasShop;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [CatalogController::class, 'index'])->name('catalog')->middleware('guest');
+Route::middleware(['guest'])->group(function () {
 
-Route::get('/register',[AuthController::class, 'register'])->name('register');
+    //Отображение главной страницы
+    Route::get('/', [CatalogController::class, 'index'])->name('catalog');
 
-Route::get('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
+    Route::controller(AuthController::class)->group(function () {
+        //Отображение формы регистрации
+        Route::get('/register','register')->name('register');
+        //Отображение формы входа
+        Route::get('/login','login')->name('login');
+        //Регистрация пользователя
+        Route::post('/users','store')->name('users.store');
+        //Вход пользователя
+        Route::get('/users','authenticate')->name('users.login');
+    });
 
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+    Route::prefix('/products')->group(function () {
+        //Отображение страницы продукта
+        Route::get('/{product}', [ProductController::class, 'show'])->name('products.show')
+        ->can('view','product');
+        //Создание заказа
+        Route::post('/{product}/orders', [OrderController::class, 'store'])->name('orders.store');
+    });
+});
 
-Route::post('/products/{product}/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::middleware(['auth'])->group(function () {
 
-Route::post('/users', [AuthController::class, 'store'])->name('users.store');
+    //Выход
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    //Отображение пользователя
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show')
+        ->can('view', [User::class, 'user']);
+    //Создание магазина
+    Route::post('/users/{user}', [ShopController::class, 'store'])->name('shop.store');
+    //Обновление данных магазина
+    Route::put('user/{shop}/update', [ShopController::class, 'update'])->name('shop.update')
+        ->can('update','shop');
 
-Route::get('/users',[AuthController::class, 'authenticate'])->name('users.login');
+    Route::middleware(UserHasShop::class)->group(function () {
+        //Отображение продуктов для пользователя
+        Route::get('/users/{user}/products/all', [UserController::class, 'products_show'])->name('user.products.show');
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::group(['prefix' => '/users/{user}/products', 'as' => 'products.'], function () {
+            //Отображение формы добавления продукта
+            Route::get('/add', [ProductController::class, 'addProducts'])->name('add');
+            //Добавление продукта
+            Route::post('/store', [ProductController::class, 'store'])->name('store');
+        });
+        //Отображение списка заказов
+        Route::get('/users/{user}/orders', [OrderController::class, 'index'])->name('orders.index');
+    });
 
-//Отображение пользователя
-Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::group(['prefix' => '/products/{product}', 'as' => 'products.'], function () {
+        Route::controller(ProductController::class)->group(function () {
+            //Отображение формы редактирования продукта
+            Route::get('/edit', 'edit')->name('edit')
+                ->can('edit','product');
+            //Обновление данных продукта
+            Route::put('/update', 'update')->name('update')
+                ->can('update','product');
+            //Удаление продукта
+            Route::delete('/destroy','destroy')->name('destroy')
+                ->can('delete','product');
+        });
+    });
 
-//Отображение формы добавления магазина
-Route::post('/users/{user}', [ShopController::class, 'store'])->name('shop.store');
+    Route::group(['prefix' => '/admin/users', 'as' => 'admin.'], function () {
+        //Страница с пользователями
+        Route::get('/', [UserController::class, 'index'])->name('index')
+                ->can('viewAny',User::class);
 
-Route::get('/users/{user}/products/all', [UserController::class, 'products_show'])->name('user.products.show')->middleware(UserHasShop::class);
-
-//Отображение формы добавления продукта
-Route::get('/users/{user}/products/add', [ProductController::class, 'addProducts'])->name('products.add')->middleware(UserHasShop::class);
-
-//Добавление продукта
-Route::post('/users/{user}/products', [ProductController::class, 'store'])->name('products.store')->middleware(UserHasShop::class);
-
-//Удаление продукта
-Route::delete('/products/{product}/destroy', [ProductController::class, 'destroy'])->name('products.destroy')->middleware('can:delete,product');
-
-//Отображение формы редактирования продукта
-Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit')->middleware('can:edit,product');
-
-//Обновление данных продукта
-Route::put('/products/{product}/update', [ProductController::class, 'update'])->name('products.update')->middleware('can:update,product');
-
-Route::get('/users/{user}/orders', [OrderController::class, 'index'])->name('orders.index')->middleware(UserHasShop::class);
-
-Route::get('admin/users', [UserController::class, 'index'])->name('admin.index');
-
-Route::get('admin/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware('auth');
-
-Route::delete('admin/users/{user}/destroy', [UserController::class, 'destroy'])->name('users.destroy');
-
-Route::put('admin/users/{user}/update', [UserController::class, 'update'])->name('admin.users.update');
-
-//Обновление данных магазина
-Route::put('user/{shop}/update', [ShopController::class, 'update'])->name('shop.update')->middleware('can:update,shop');
+        Route::group(['prefix' => '/{user}', 'as' => 'users.'], function () {
+            //Отображение пользователя
+            Route::get('/edit', [UserController::class, 'edit'])->name('edit')
+                ->can('edit',User::class);
+            //Обновление данных пользователя
+            Route::put('/update', [UserController::class, 'update'])->name('update')
+                ->can('update',User::class);
+            //Удаление пользователя
+            Route::delete('/destroy', [UserController::class, 'destroy'])->name('destroy')
+                ->can('delete',User::class);
+        });
+    });
+});

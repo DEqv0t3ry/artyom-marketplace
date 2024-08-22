@@ -27,12 +27,12 @@
                             <tr>
                                 <td><img src="{{$user->shop ? $user->shop->getLogoUrl() : 'https://via.placeholder.com/150'}}" class="img-thumbnail"
                                          alt="Изображение товара" style="max-width: 100px;"></td>
-                                <td><a href="{{route('users.edit', $user->id)}}" class="text-decoration-none">
+                                <td><a href="{{route('admin.users.edit', $user->id)}}" class="text-decoration-none">
                                         {{$user->shop ? $user->shop->name : $user->email}}</a></td>
                                 <td>{{$user->shop ? $user->shop->inn : ''}}</td>
                                 <td>{{$user->shop ? $user->shop->address : ''}}</td>
                                 <td>{{$user->shop ? $user->shop->phone : ''}}</td>
-                                <form method="post" action="{{route('users.destroy', $user->id)}}" >
+                                <form method="post" action="{{route('admin.users.destroy', $user->id)}}" >
                                     @csrf
                                     @method('delete')
                                     <td class="text-center">

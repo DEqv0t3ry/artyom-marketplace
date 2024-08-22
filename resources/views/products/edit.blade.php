@@ -34,7 +34,7 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="unit" class="form-label">Единица измерения</label>
-                                        <select class="form-select" id="unit" name="unit">
+                                        <select class="form-select" id="unit_id" name="unit_id">
                                             @forelse(\App\Models\Unit::all() as $unit)
                                                 <option @if($product->unit_id == $unit->id) selected @endif value="{{ $unit->id }}">{{ $unit->name }}</option>
                                             @empty

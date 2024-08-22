@@ -16,9 +16,14 @@ class ShopService
 {
     public function createShop(CreateShopRequest $request, User $user)
     {
-        $request->hasFile('logo') ? $request['logo'] = $request['logo']->store('logos', 'public') : null;
+
         $shopData = $request->validated();
         $shopData['user_id'] = $user->id;
+
+        $request->hasFile('logo') ?
+            $shopData['logo'] = $shopData['logo']->store('logos', 'public')
+            : null;
+
         return Shop::create($shopData);
     }
 

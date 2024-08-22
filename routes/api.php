@@ -8,14 +8,16 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/product/{product}/set-status', [ProductController::class, 'changeStatus']);
 
-Route::get('/order/{order}/set-status', [OrderController::class, 'changeStatus']);
+    Route::get('/product/{product}/set-status', [ProductController::class, 'changeStatus']);
 
-Route::delete('/products/{product}/deletePhoto', [ProductController::class, 'deleteThumbnail'])->name('products.deletePhoto');
+    Route::get('/order/{order}/set-status', [OrderController::class, 'changeStatus']);
 
-Route::delete('/photos/{photo}/deleteImages', [PhotoController::class, 'delete'])->name('products.deleteImages');
+    Route::delete('/products/{product}/deletePhoto', [ProductController::class, 'deleteThumbnail'])->name('products.deletePhoto');
 
-Route::delete('shops/{shop}/deleteLogo', [ShopController::class, 'deleteLogo'])->name('shops.deleteLogo');
+    Route::delete('/photos/{photo}/deleteImages', [PhotoController::class, 'delete'])->name('products.deleteImages');
 
-Route::post('/shops/checkInn', [ShopController::class, 'checkInn'])->name('shops.checkInn');
+    Route::delete('shops/{shop}/deleteLogo', [ShopController::class, 'deleteLogo'])->name('shops.deleteLogo');
+
+    Route::post('/shops/checkInn', [ShopController::class, 'checkInn'])->name('shops.checkInn');
+

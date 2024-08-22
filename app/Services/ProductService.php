@@ -39,9 +39,9 @@ class ProductService
         $productData = $request->validated();
         $productData['on_sale'] = false;
 
-        if ($request->hasFile('photo'))
+        if ($request->hasFile('thumbnail'))
         {
-            $productData['thumbnail'] = $productData['thumbnail']->store('thumbnails', 'public');
+            $productData['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
 
             $product->thumbnail ? Storage::disk('public')->delete($product->thumbnail) : null;
         }

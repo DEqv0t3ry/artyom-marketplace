@@ -18,7 +18,6 @@ class UserSeeder extends Seeder
             ->count(10)
             ->has(Product::factory()
                 ->count(3)
-                ->hasPhotos(3)
             )
             ->hasShop()
             ->create();

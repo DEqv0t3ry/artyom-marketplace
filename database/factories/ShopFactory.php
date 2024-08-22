@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\DefaultImagesEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,6 @@ class ShopFactory extends Factory
             'inn' => fake()->numberBetween(1000000000, 9999999999),
             'address' => fake()->address(),
             'phone' => fake()->phoneNumber(),
-            'logo' => fake()->imageUrl(),
         ];
     }
 }
