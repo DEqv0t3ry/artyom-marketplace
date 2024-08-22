@@ -14,7 +14,9 @@ class AuthController extends Controller
 {
     public function __construct(
         private readonly AuthService $authService,
-    ){}
+    ){
+    }
+
     public function register()
     {
         return view('auth.register');
@@ -34,22 +36,13 @@ class AuthController extends Controller
 
     public function authenticate()
     {
-        if (auth()->attempt([
-            'email' => request('email'),
-            'password' => request('password')
-        ]))
-        {
-            request()->session()->regenerate();
+        $this->authService->authenticate();
 
-            if(Auth::user()->role_id == Role::where('slug',RoleEnum::ADMIN->value)->first()->id) {
-                return redirect()->route('admin.index')->with('success','Вы успешно вошли');
-            }
-            return redirect()->route('users.show', Auth::id())->with('success','Вы успешно вошли');
+        $adminRole = Role::where('slug',RoleEnum::ADMIN->value)->first();
+        if(Auth::user()->role_id == $adminRole->id) {
+            return redirect()->route('admin.index')->with('success','Вы успешно вошли');
         }
-
-        return back()->withErrors([
-            'email' => 'Неверный логин или пароль'
-        ])->onlyInput('email');
+        return redirect()->route('users.show', Auth::id())->with('success','Вы успешно вошли');
     }
 
     public function logout()

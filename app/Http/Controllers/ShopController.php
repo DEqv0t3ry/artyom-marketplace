@@ -18,7 +18,8 @@ class ShopController extends Controller
 {
     public function __construct(
         private readonly ShopService $shopService
-    ){}
+    ){
+    }
 
     public function store(CreateShopRequest $request,  User $user)
     {

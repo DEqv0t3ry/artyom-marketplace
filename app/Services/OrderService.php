@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Requests\ChangeOrderStatusRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -11,16 +12,24 @@ class OrderService
 {
     public function __construct(
         private readonly MailService $mailService,
-    )
-    {
+    ){
     }
 
     public function getOrders(User $user)
     {
-        return $user->products->flatMap->orders->sortByDesc('created_at')
-            ->when(request()->has('sort') && request('sort') == 'unprocessed', function ($orders) {
-            return $orders->sortBy('processed');
-        });
+        return $user->orders()
+            ->when(
+                !request()->has('sort') || request('sort') == 'date',
+                function ($orders) {
+                    return $orders->latest();
+                }
+            )
+            ->when(
+                request()->has('sort') && request('sort') == 'unprocessed',
+                function ($orders) {
+                    return $orders->orderBy('processed');
+                }
+            )->get();
     }
 
     public function createOrder($request,  Product $product)
@@ -43,13 +52,10 @@ class OrderService
         return $data;
     }
 
-    public function changeOrderStatus(Request $request, Order $order)
+    public function changeOrderStatus(array $request, Order $order)
     {
-        $request->validate([
-            'status' => 'required|bool'
-        ]);
         $order->update([
-            'processed' => $request->get('status') ? 1 : 0
+            'processed' => $request['status'] ? 1 : 0
         ]);
 
         return $order;

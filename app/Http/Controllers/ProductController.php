@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangeOrderStatusRequest;
+use App\Http\Requests\ChangeProductStatusRequest;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\CreateShopRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -19,7 +21,8 @@ class ProductController extends Controller
 
     public function __construct(
         private readonly ProductService $productService
-    ){}
+    ){
+    }
 
     public function show(Product $product)
     {
@@ -62,7 +65,7 @@ class ProductController extends Controller
         $this->productService->deleteThumbnail($product);
     }
 
-    public function changeStatus(Request $request, Product $product)
+    public function changeStatus(ChangeProductStatusRequest $request, Product $product)
     {
         return $this->productService->changeStatus($request, $product);
     }

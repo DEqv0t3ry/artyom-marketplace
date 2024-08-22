@@ -79,13 +79,10 @@ class ProductService
         ]);
     }
 
-    public function changeStatus(Request $request, Product $product)
+    public function changeStatus($request, Product $product)
     {
-        $request->validate([
-            'status' => 'required|bool'
-        ]);
         $product->update([
-            'on_sale' => $request->get('status') ? 1 : 0
+            'on_sale' => $request['status'] ? 1 : 0
         ]);
 
         return $product;

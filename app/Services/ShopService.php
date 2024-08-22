@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateShopRequest;
 use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use MoveMoveIo\DaData\Enums\BranchType;
 use MoveMoveIo\DaData\Enums\CompanyType;
@@ -49,7 +50,8 @@ class ShopService
             $dadata = DaDataCompany::id($inn['inn'], 1, null, BranchType::MAIN, CompanyType::LEGAL);
             return $dadata['suggestions'][0]['data']['address']['value'];
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            Log::error($e->getMessage());
+            return 'Не удалось получить адрес по ИНН';
         }
     }
 }

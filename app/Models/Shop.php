@@ -24,12 +24,12 @@ class Shop extends Model
         'logo',
         'user_id',
     ];
+
     public function getLogoUrl()
     {
         if ($this->logo) {
             return url('storage/' . $this->logo);
         }
-
         return url(DefaultImagesEnum::SHOP_LOGO->value);
     }
 }

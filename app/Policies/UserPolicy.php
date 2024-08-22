@@ -9,14 +9,6 @@ use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function viewAny(User $authentificatedUser) : Response
     {
         $adminRole = Role::where('slug', RoleEnum::ADMIN->value)->first()->id;

@@ -27,7 +27,7 @@ class CreateOrderRequest extends FormRequest
         return [
             'name' => 'required|max:100',
             'email' => 'required|email|max:100',
-            'phone' => [new PhoneRule],
+            'phone' => ['nullable', new PhoneRule],
             'count' => 'required|min:1|max:100000',
         ];
     }

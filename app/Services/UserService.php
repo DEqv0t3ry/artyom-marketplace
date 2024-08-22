@@ -13,12 +13,11 @@ class UserService
 {
     public function getUsers()
     {
-        return User::where('role_id',
-            (Role::where('slug',RoleEnum::SHOP->value)->first()->id)
-        )->get();
+        $roleId = Role::where('slug',RoleEnum::SHOP->value)->first()->id;
+        return User::where('role_id', $roleId)->get();
     }
 
-    public function updateUser($requestUser, UpdateShopRequest $requestShop, User $user)
+    public function updateUser(array $requestUser, UpdateShopRequest $requestShop, User $user)
     {
         $shopData = $requestShop->validated();
 

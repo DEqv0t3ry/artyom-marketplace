@@ -20,9 +20,6 @@ class InnRule implements ValidationRule
         if (!preg_match('/\d{10}/', $value)) {
             $fail('Неверный формат ИНН');
         }
-        if(!isset($value) || empty($value)) {
-            $fail('ИНН не может быть пустым');
-        }
         if (!DaDataCompany::id($value, 1, null, BranchType::MAIN, CompanyType::LEGAL)['suggestions']) {
             $fail('ИНН не найден в базе');
         }

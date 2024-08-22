@@ -11,14 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ShopPolicy
 {
-    /**
-     * Create a new policy instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function update(User $user, Shop $shop) : Response
     {
         return $user->id === $shop->user_id

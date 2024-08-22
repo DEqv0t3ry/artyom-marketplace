@@ -26,7 +26,8 @@ class UpdateUserRequest extends FormRequest
         return [
             'email' => [
                 'email',
-                Rule::unique('users')->ignore($this->user),],
+                Rule::unique('users')->ignore($this->user),
+            ],
             'password' => 'nullable|min:8|regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).+$/',
         ];
     }

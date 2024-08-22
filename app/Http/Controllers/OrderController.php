@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangeOrderStatusRequest;
 use App\Http\Requests\CreateOrderRequest;
 use App\Models\Order;
 use App\Models\Product;
@@ -13,7 +14,8 @@ class OrderController extends Controller
 {
     public function __construct(
         private readonly OrderService $orderService,
-    ) {}
+    ) {
+    }
 
     public function index(User $user)
     {
@@ -31,8 +33,8 @@ class OrderController extends Controller
         return redirect()->route('catalog')->with('success', 'Заказ оформлен');
     }
 
-    public function changeStatus(Request $request, Order $order)
+    public function changeStatus(ChangeOrderStatusRequest $request, Order $order)
     {
-        $this->orderService->changeOrderStatus($request, $order);
+        $this->orderService->changeOrderStatus($request->validated(), $order);
     }
 }

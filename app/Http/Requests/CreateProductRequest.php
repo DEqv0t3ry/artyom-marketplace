@@ -47,7 +47,7 @@ class CreateProductRequest extends FormRequest
             'main_description.required' => 'Поле "Описание" обязательно для заполнения',
             'main_description.max' => 'Поле "Описание" не может быть больше 10000 символов',
             'thumbnail.image' => 'Фотография-анонс должна быть изображением',
-            'thumbnail.mimes' => 'Фотография-анонс должна быть в формате jpg, jpeg или png',
+            'thumbnail.mimes' => 'Фотография-анонс должна быть в формате jpg, jpeg или webp',
             'thumbnail.max' => 'Фотография-анонс не может быть больше 2 мегабайт',
             'images.*.image' => 'Фотографии должны быть изображениями',
             'images.*.mimes' => 'Фотографии должны быть в формате jpg, jpeg или png',

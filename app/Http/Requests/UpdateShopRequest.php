@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ExistInnRule;
 use App\Rules\InnRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +25,7 @@ class UpdateShopRequest extends FormRequest
     {
         return [
             'name' => 'max:200',
-            'inn' => [new InnRule],
+            'inn' => [new InnRule, new ExistInnRule],
             'address' => 'min:20',
             'phone' => 'max:100',
             'logo' => 'image|mimes:jpg,jpeg,webp|max:2048',

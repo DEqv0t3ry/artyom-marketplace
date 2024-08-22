@@ -9,14 +9,6 @@ use Illuminate\Auth\Access\Response;
 class ProductPolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-
-    }
-
-    /**
      * Determine whether the user can view the model.
      */
     public function view(?User $user, Product $product): Response
@@ -27,15 +19,6 @@ class ProductPolicy
         }
         return Response::deny('Этот продукт не доступен');
     }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        //
-    }
-
 
     /**
      * Determine whether the user can update the model.
@@ -65,21 +48,5 @@ class ProductPolicy
         return $user->id === $product->user_id
             ? Response::allow()
             : Response::deny('У вас нет прав на удаление этого продукта');
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Product $product): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Product $product): bool
-    {
-        //
     }
 }

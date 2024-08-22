@@ -11,7 +11,9 @@ class PhotoController extends Controller
 {
     public function __construct(
         private readonly PhotoService $photoService,
-    ){}
+    ){
+    }
+
     public function delete(Photo $photo)
     {
         return $this->photoService->deletePhoto($photo);
