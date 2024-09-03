@@ -7,14 +7,23 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\UserHasShop;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['guest'])->group(function () {
+//Отображение главной страницы
+Route::get('/', [CatalogController::class, 'index'])->name('catalog');
 
-    //Отображение главной страницы
-    Route::get('/', [CatalogController::class, 'index'])->name('catalog');
+Route::prefix('/products')->group(function () {
+    //Отображение страницы продукта
+    Route::get('/{product}', [ProductController::class, 'show'])->name('products.show')
+        ->can('view','product');
+    //Создание заказа
+    Route::post('/{product}/orders', [OrderController::class, 'store'])->name('orders.store');
+});
+
+Route::middleware(['guest'])->group(function () {
 
     Route::controller(AuthController::class)->group(function () {
         //Отображение формы регистрации
@@ -25,14 +34,6 @@ Route::middleware(['guest'])->group(function () {
         Route::post('/users','store')->name('users.store');
         //Вход пользователя
         Route::get('/users','authenticate')->name('users.login');
-    });
-
-    Route::prefix('/products')->group(function () {
-        //Отображение страницы продукта
-        Route::get('/{product}', [ProductController::class, 'show'])->name('products.show')
-        ->can('view','product');
-        //Создание заказа
-        Route::post('/{product}/orders', [OrderController::class, 'store'])->name('orders.store');
     });
 });
 
@@ -46,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
     //Создание магазина
     Route::post('/users/{user}', [ShopController::class, 'store'])->name('shop.store');
     //Обновление данных магазина
-    Route::put('user/{shop}/update', [ShopController::class, 'update'])->name('shop.update')
+    Route::put('users/{shop}/update', [ShopController::class, 'update'])->name('shop.update')
         ->can('update','shop');
 
     Route::middleware(UserHasShop::class)->group(function () {
@@ -60,7 +61,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/store', [ProductController::class, 'store'])->name('store');
         });
         //Отображение списка заказов
-        Route::get('/users/{user}/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/users/{user}/orders', [OrderController::class, 'index'])->name('orders.index')
+            ->can('view',[User::class, 'user']);
     });
 
     Route::group(['prefix' => '/products/{product}', 'as' => 'products.'], function () {

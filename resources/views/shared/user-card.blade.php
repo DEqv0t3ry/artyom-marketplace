@@ -5,14 +5,22 @@
                 Профиль пользователя
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4 text-center">
-                        <img src="{{$user->shop->getLogoUrl()}}" class="img-fluid rounded-circle mb-3" alt="Логотип компании" style="max-width: 150px;">
-                    </div>
-                    <div class="col-md-8">
-                        <form action="{{route('shop.update', $user->id)}}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
+                <form action="{{route('shop.update', $user->shop->id)}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            @if($user->shop->logo)
+                                <img src="{{$user->shop->getLogoUrl()}}" class="img-fluid rounded-circle mb-3" alt="Логотип компании" style="max-width: 150px;">
+                            @else
+                                <label for="logo" class="form-label">Логотип компании</label>
+                                <input class="form-control mb-3" type="file" id="logo" name="logo">
+                                @error('logo')
+                                <span class="fs-6 text-danger">{{ $message }}</span>
+                                @enderror
+                            @endif
+                        </div>
+                        <div class="col-md-8">
                             <h4 class="card-title">{{$user->shop->name}}</h4>
                             <p class="card-text"><strong>ИНН: </strong>{{$user->shop->inn}}</p>
                             <p class="card-text"><strong>Адрес: </strong>{{$user->shop->address}}</p>
@@ -22,14 +30,10 @@
                             <span class="fs-6 text-danger">{{ $message }}</span>
                             @enderror
                             <button type="submit" class="btn btn-primary mt-3">Сохранить</button>
-                        </form>
+                        </div>
+
                     </div>
-                </div>
-                @if(Auth::user()->role_id === 1)
-                    <a href="{{route('admin.users.edit', $user->id)}}">
-                        <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#editModal">Редактировать профиль</button>
-                    </a>
-                @endif
+                </form>
             </div>
         @else
             <div class="card-header text-center bg-dark text-white">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\RoleEnum;
+use App\Http\Requests\AuthRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\Role;
 use App\Models\User;
@@ -34,9 +35,9 @@ class AuthController extends Controller
         return redirect()->route('catalog')->with('success','Аккаунт успешно создан');
     }
 
-    public function authenticate()
+    public function authenticate(AuthRequest $request)
     {
-        $this->authService->authenticate();
+        $this->authService->authenticate($request->validated());
 
         $adminRole = Role::where('slug',RoleEnum::ADMIN->value)->first();
         if(Auth::user()->role_id == $adminRole->id) {

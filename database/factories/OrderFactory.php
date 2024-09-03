@@ -21,7 +21,7 @@ class OrderFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
-            'phone' => fake()->regexify('/+7\d{9}/'),
+            'phone' => fake()->regexify('/(\+79)\d{9}/'),
             'count' => fake()->numberBetween(1, 10),
             'product_id' => $product->id,
             'processed' => fake()->boolean()

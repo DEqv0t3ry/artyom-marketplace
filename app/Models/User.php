@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(Order::class, Product::class);
     }
+
+    public function photos(): HasManyThrough
+    {
+        return $this->hasManyThrough(Photo::class, Product::class);
+    }
 }

@@ -23,7 +23,7 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).+$/',
+            'password' => 'required|min:8|regex:/^(?=.*[a-zA-Zа-яА-Я])(?=.*[0-9]).+$/',
             'password_confirmation' => 'required|same:password',
         ];
     }

@@ -67,6 +67,6 @@ class ProductController extends Controller
 
     public function changeStatus(ChangeProductStatusRequest $request, Product $product)
     {
-        return $this->productService->changeStatus($request, $product);
+        return $this->productService->changeStatus($request->validated(), $product);
     }
 }

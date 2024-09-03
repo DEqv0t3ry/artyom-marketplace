@@ -32,6 +32,12 @@ class ShopService
     {
         $shopData = $request->validated();
 
+        if($request->hasFile('logo')) {
+            $shopData['logo'] = $request->file('logo')->store('logos', 'public');
+
+            $shop->logo ? Storage::disk('public')->delete($shop->logo) : null;
+        }
+
         return $shop->update($shopData);
     }
 

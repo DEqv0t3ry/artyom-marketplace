@@ -39,6 +39,15 @@ class UserService
     public function deleteUser(User $user)
     {
         $user->shop && $user->shop->logo ? Storage::disk('public')->delete($user->shop->logo) : null;
+
+        foreach ($user->products as $product) {
+           $product->thumbnail ? Storage::disk('public')->delete($product->thumbnail) : null;
+        }
+
+        foreach ($user->photos as $photo) {
+            Storage::disk('public')->delete($photo->photo);
+        }
+
         return $user->delete();
     }
 }

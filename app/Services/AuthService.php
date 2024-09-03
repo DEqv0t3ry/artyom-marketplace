@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\RoleEnum;
+use App\Http\Requests\AuthRequest;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\Role;
 use App\Models\User;
@@ -16,19 +17,16 @@ class AuthService
         return User::create($request);
     }
 
-    public function authenticate()
+    public function authenticate($request)
     {
         if (auth()->attempt([
-            'email' => request('email'),
-            'password' => request('password')
+            'email' => $request['email'],
+            'password' => $request['password'],
         ]))
         {
-            request()->session()->regenerate();
+            //dd(Auth::user());
+            //..request()->session()->regenerate();
         }
-
-        return back()->withErrors([
-            'email' => 'Неверный логин или пароль'
-        ])->onlyInput('email');
     }
 
     public function logoutUser(): void
